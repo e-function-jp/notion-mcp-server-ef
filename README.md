@@ -1,3 +1,5 @@
+![Demo](https://github.com/user-attachments/assets/ad6db606-ae3a-48db-a1cc-e1f88847769e)
+
 # Replicate Flux MCP
 
 ![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-blue)
