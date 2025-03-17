@@ -1,3 +1,5 @@
+![Demo](https://github.com/user-attachments/assets/ad6db606-ae3a-48db-a1cc-e1f88847769e)
+
 # Replicate Flux MCP
 
 ![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-blue)
@@ -5,6 +7,8 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-4.9+-blue)
 ![Model Context Protocol](https://img.shields.io/badge/MCP-Enabled-purple)
 [![smithery badge](https://smithery.ai/badge/@awkoy/replicate-flux-mcp)](https://smithery.ai/server/@awkoy/replicate-flux-mcp)
+![NPM Downloads](https://img.shields.io/npm/dw/replicate-flux-mcp)
+![Stars](https://img.shields.io/github/stars/awkoy/replicate-flux-mcp)
 
 <a href="https://glama.ai/mcp/servers/ss8n1knen8">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/ss8n1knen8/badge" />
