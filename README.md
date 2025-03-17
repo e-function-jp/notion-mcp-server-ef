@@ -14,6 +14,10 @@
   <img width="380" height="200" src="https://glama.ai/mcp/servers/ss8n1knen8/badge" />
 </a>
 
+| Multiple Prompts | Prompt Variants |
+|-----------------|-----------------|
+| ![Multiple prompts example: "A serene mountain lake at sunset", "A bustling city street at night", "A peaceful garden in spring"](https://github.com/user-attachments/assets/e5ac56d2-bfbb-4f33-938c-a3d7bffeee60) | ![Variants example: Base prompt "A majestic castle" with modifiers "in watercolor style", "as an oil painting", "with gothic architecture"](https://github.com/user-attachments/assets/8ebe5992-4803-4bf3-a82a-251135b0698a) |
+
 **Replicate Flux MCP** is an advanced Model Context Protocol (MCP) server that empowers AI assistants to generate high-quality images and vector graphics. Leveraging [Black Forest Labs' Flux Schnell model](https://replicate.com/black-forest-labs/flux-schnell) for raster images and [Recraft's V3 SVG model](https://replicate.com/recraft-ai/recraft-v3-svg) for vector graphics via the Replicate API.
 
 ## 📑 Table of Contents
