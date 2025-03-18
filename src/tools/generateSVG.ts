@@ -1,41 +1,50 @@
 import { SvgGenerationParams } from "../types/index.js";
-import { pollForCompletion, replicate } from "../services/replicate.js";
+import { replicate } from "../services/replicate.js";
 import { handleError } from "../utils/error.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { urlToSvg } from "../utils/image.js";
 import { CONFIG } from "../config/index.js";
+import { FileOutput } from "replicate";
 
 export const registerGenerateSvgTool = async (
   input: SvgGenerationParams
 ): Promise<CallToolResult> => {
   try {
-    const prediction = await replicate.predictions.create({
-      model: CONFIG.svgModelId,
+    const output = (await replicate.run(CONFIG.svgModelId, {
       input,
-    });
+    })) as FileOutput;
 
-    await replicate.predictions.get(prediction.id);
-    const completed = await pollForCompletion(prediction.id);
+    const svgUrl = output.url() as unknown as string;
+    if (!svgUrl) {
+      throw new Error("Failed to generate SVG URL");
+    }
 
-    const svg = await urlToSvg(completed?.output);
+    try {
+      const svg = await urlToSvg(svgUrl);
 
-    return {
-      content: [
-        {
-          type: "text",
-          text: `This is a generated image link: ${completed?.output}`,
-        },
-        {
-          type: "text",
-          text: svg,
-        },
-        {
-          type: "text",
-          text: JSON.stringify(completed, null, 2),
-        },
-      ],
-    };
+      return {
+        content: [
+          {
+            type: "text",
+            text: `This is a generated SVG url: ${svgUrl}`,
+          },
+          {
+            type: "text",
+            text: svg,
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `This is a generated SVG url: ${svgUrl}`,
+          },
+        ],
+      };
+    }
   } catch (error) {
-    handleError(error);
+    return handleError(error);
   }
 };

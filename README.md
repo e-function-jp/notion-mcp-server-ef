@@ -1,5 +1,3 @@
-![Demo](https://github.com/user-attachments/assets/ad6db606-ae3a-48db-a1cc-e1f88847769e)
-
 # Replicate Flux MCP
 
 ![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-blue)
@@ -14,30 +12,124 @@
   <img width="380" height="200" src="https://glama.ai/mcp/servers/ss8n1knen8/badge" />
 </a>
 
-| Multiple Prompts | Prompt Variants |
-|-----------------|-----------------|
-| ![Multiple prompts example: "A serene mountain lake at sunset", "A bustling city street at night", "A peaceful garden in spring"](https://github.com/user-attachments/assets/e5ac56d2-bfbb-4f33-938c-a3d7bffeee60) | ![Variants example: Base prompt "A majestic castle" with modifiers "in watercolor style", "as an oil painting", "with gothic architecture"](https://github.com/user-attachments/assets/8ebe5992-4803-4bf3-a82a-251135b0698a) |
-
 **Replicate Flux MCP** is an advanced Model Context Protocol (MCP) server that empowers AI assistants to generate high-quality images and vector graphics. Leveraging [Black Forest Labs' Flux Schnell model](https://replicate.com/black-forest-labs/flux-schnell) for raster images and [Recraft's V3 SVG model](https://replicate.com/recraft-ai/recraft-v3-svg) for vector graphics via the Replicate API.
 
 ## 📑 Table of Contents
 
+- [Getting Started & Integration](#-getting-started--integration)
+  - [Setup Process](#setup-process)
+  - [Cursor Integration](#cursor-integration)
+  - [Claude Desktop Integration](#claude-desktop-integration)
+  - [Smithery Integration](#smithery-integration)
+  - [Glama.ai Integration](#glamaai-integration)
 - [Features](#-features)
-- [Installation](#-installation)
-- [Getting Started](#-getting-started)
 - [Documentation](#-documentation)
   - [Available Tools](#available-tools)
   - [Available Resources](#available-resources)
-- [Integration](#-integration)
-  - [Cursor](#cursor-integration)
-  - [Claude Desktop](#claude-desktop-integration)
-  - [Smithery](#smithery-integration)
 - [Development](#-development)
 - [Technical Details](#-technical-details)
 - [Troubleshooting](#-troubleshooting)
 - [Contributing](#-contributing)
 - [License](#-license)
 - [Resources](#-resources)
+- [Examples](#-examples)
+
+## 🚀 Getting Started & Integration
+
+### Setup Process
+
+1. **Obtain a Replicate API Token**
+   - Sign up at [Replicate](https://replicate.com/)
+   - Create an API token in your account settings
+
+2. **Choose Your Integration Method**
+   - Follow one of the integration options below based on your preferred MCP client
+
+3. **Ask Your AI Assistant to Generate an Image**
+   - Simply ask naturally: "Can you generate an image of a serene mountain landscape at sunset?"
+   - Or be more specific: "Please create an image showing a peaceful mountain scene with a lake reflecting the sunset colors in the foreground"
+
+4. **Explore Advanced Features**
+   - Try different parameter settings for customized results
+   - Experiment with SVG generation using `generate_svg`
+   - Use batch image generation or variant generation features
+
+### Cursor Integration
+
+#### Method 1: Using mcp.json
+
+1. Create or edit the `.cursor/mcp.json` file in your project directory:
+
+```json
+{
+  "mcpServers": {
+    "replicate-flux-mcp": {
+      "command": "env REPLICATE_API_TOKEN=YOUR_TOKEN npx",
+      "args": ["-y", "replicate-flux-mcp"]
+    }
+  }
+}
+```
+
+2. Replace `YOUR_TOKEN` with your actual Replicate API token
+3. Restart Cursor to apply the changes
+
+#### Method 2: Manual Mode
+
+1. Open Cursor and go to Settings
+2. Navigate to the "MCP" or "Model Context Protocol" section
+3. Click "Add Server" or equivalent
+4. Enter the following command in the appropriate field:
+
+```
+env REPLICATE_API_TOKEN=YOUR_TOKEN npx -y replicate-flux-mcp
+```
+
+5. Replace `YOUR_TOKEN` with your actual Replicate API token
+6. Save the settings and restart Cursor if necessary
+
+### Claude Desktop Integration
+
+1. Create or edit the `mcp.json` file in your configuration directory:
+
+```json
+{
+  "mcpServers": {
+    "replicate-flux-mcp": {
+      "command": "npx",
+      "args": ["-y", "replicate-flux-mcp"],
+      "env": {
+        "REPLICATE_API_TOKEN": "YOUR TOKEN"
+      }
+    }
+  }
+}
+```
+
+2. Replace `YOUR_TOKEN` with your actual Replicate API token
+3. Restart Claude Desktop to apply the changes
+
+### Smithery Integration
+
+This MCP server is available as a hosted service on Smithery, allowing you to use it without setting up your own server.
+
+1. Visit [Smithery](https://smithery.ai/) and create an account if you don't have one
+2. Navigate to the [Replicate Flux MCP server page](https://smithery.ai/server/@awkoy/replicate-flux-mcp)
+3. Click "Add to Workspace" to add the server to your Smithery workspace
+4. Configure your MCP client (Cursor, Claude Desktop, etc.) to use your Smithery workspace URL
+
+For more information on using Smithery with your MCP clients, visit the [Smithery documentation](https://smithery.ai/docs).
+
+### Glama.ai Integration
+
+This MCP server is also available as a hosted service on Glama.ai, providing another option to use it without local setup.
+
+1. Visit [Glama.ai](https://glama.ai/) and create an account if you don't have one
+2. Go to the [Replicate Flux MCP server page](https://glama.ai/mcp/servers/ss8n1knen8)
+3. Click "Install Server" to add the server to your workspace
+4. Configure your MCP client to use your Glama.ai workspace
+
+For more information, visit the [Glama.ai MCP servers documentation](https://glama.ai/mcp/servers).
 
 ## 🌟 Features
 
@@ -51,60 +143,6 @@
 - **📊 Batch Processing** - Generate multiple images from different prompts in a single request
 - **🔄 Variant Exploration** - Create and compare multiple interpretations of the same concept
 - **✏️ Prompt Engineering** - Fine-tune image variations with specialized prompt modifications
-
-## 📦 Installation
-
-### NPM Global Installation
-
-```bash
-npm install -g replicate-flux-mcp
-```
-
-### Direct Usage with NPX
-
-```bash
-REPLICATE_API_TOKEN=your_token npx -y replicate-flux-mcp
-```
-
-### From Source
-
-```bash
-# Clone the repository
-git clone https://github.com/yourusername/replicate-flux-mcp.git
-cd replicate-flux-mcp
-
-# Install dependencies
-npm install
-
-# Build the project
-npm run build
-```
-
-## 🚀 Getting Started
-
-1. **Obtain a Replicate API Token**
-   - Sign up at [Replicate](https://replicate.com/)
-   - Create an API token in your account settings
-
-2. **Install the MCP Server**
-   - Follow the installation instructions above
-
-3. **Configure Your MCP Client**
-   - Set up your preferred MCP client (Cursor, Claude Desktop, etc.)
-   - Add your Replicate API token to the configuration
-
-4. **Generate Your First Image**
-   - Use the `generate_image` tool with a descriptive prompt
-   - Example: `"A serene mountain landscape at sunset with reflections in a lake"`
-
-5. **Explore Advanced Features**
-   - Try different parameter settings for customized results
-   - Experiment with SVG generation using `generate_svg`
-   - Use batch image generation with `generate_multiple_images` for creating variations on a theme
-     - Example: `{ "prompts": ["A red sports car on a mountain road", "A blue sports car on a beach", "A vintage sports car in a city street"] }`
-   - Generate multiple design variants with `generate_image_variants` to explore different interpretations of the same prompt
-     - Using seeds: `{ "prompt": "A futuristic city skyline at night", "num_variants": 4, "seed": 42 }`
-     - Using prompt variations: `{ "prompt": "A character portrait", "prompt_variations": ["in anime style", "in watercolor style", "in oil painting style", "as a 3D render"] }`
 
 ## 📚 Documentation
 
@@ -215,75 +253,6 @@ Browse your history of generated SVG images created with the Recraft V3 SVG mode
 
 Browse all your Replicate predictions history.
 
-## 🔧 Integration
-
-### Cursor Integration
-
-#### Method 1: Using mcp.json
-
-1. Create or edit the `.cursor/mcp.json` file in your project directory:
-
-```json
-{
-  "mcpServers": {
-    "replicate-flux-mcp": {
-      "command": "env REPLICATE_API_TOKEN=YOUR_TOKEN npx",
-      "args": ["-y", "replicate-flux-mcp"]
-    }
-  }
-}
-```
-
-2. Replace `YOUR_TOKEN` with your actual Replicate API token
-3. Restart Cursor to apply the changes
-
-#### Method 2: Using Cursor MCP Settings
-
-1. Open Cursor and go to Settings
-2. Navigate to the "MCP" or "Model Context Protocol" section
-3. Click "Add Server" or equivalent
-4. Enter the following command in the appropriate field:
-
-```
-env REPLICATE_API_TOKEN=YOUR_TOKEN npx -y replicate-flux-mcp
-```
-
-5. Replace `YOUR_TOKEN` with your actual Replicate API token
-6. Save the settings and restart Cursor if necessary
-
-### Claude Desktop Integration
-
-```json
-{
-  "mcpServers": {
-    "replicate-flux-mcp": {
-      "command": "npx",
-      "args": ["-y", "replicate-flux-mcp"],
-      "env": {
-        "REPLICATE_API_TOKEN": "YOUR TOKEN"
-      }
-    }
-  }
-}
-```
-
-### Smithery Integration
-
-This MCP server is available as a hosted service on Smithery, allowing you to use it without setting up your own server.
-
-1. Visit [Smithery](https://smithery.ai/) and create an account if you don't have one
-2. Navigate to the [Replicate Flux MCP server page](https://smithery.ai/server/@awkoy/replicate-flux-mcp)
-3. Click "Add to Workspace" to add the server to your Smithery workspace
-4. Configure your MCP client (Cursor, Claude Desktop, etc.) to use your Smithery workspace URL
-
-Benefits of using the Smithery-hosted version:
-- No local setup required
-- Always running the latest version
-- Managed infrastructure and reliability
-- Easy integration with other Smithery MCP servers
-
-For more information on using Smithery with your MCP clients, visit the [Smithery documentation](https://smithery.ai/docs).
-
 ## 💻 Development
 
 1. Clone the repository:
@@ -311,6 +280,24 @@ npm run dev
 npm run build
 ```
 
+5. Connect to Client:
+
+```json
+{
+  "mcpServers": {
+    "image-generation-mcp": {
+      "command": "npx",
+      "args": [
+        "/Users/{USERNAME}/{PATH_TO}/replicate-flux-mcp/build/index.js"
+      ],
+      "env": {
+        "REPLICATE_API_TOKEN": "YOUR REPLICATE API TOKEN"
+      }
+    }
+  }
+}
+```
+
 ## ⚙️ Technical Details
 
 ### Stack
@@ -327,10 +314,10 @@ The server can be configured by modifying the `CONFIG` object in `src/config/ind
 ```javascript
 const CONFIG = {
   serverName: "replicate-flux-mcp",
-  serverVersion: "0.1.1",
+  serverVersion: "0.1.2",
   imageModelId: "black-forest-labs/flux-schnell",
   svgModelId: "recraft-ai/recraft-v3-svg",
-  pollingAttempts: 5,
+  pollingAttempts: 25,
   pollingInterval: 2000, // ms
 };
 ```
@@ -343,13 +330,13 @@ const CONFIG = {
 - Ensure your `REPLICATE_API_TOKEN` is correctly set in the environment
 - Verify your token is valid by testing it with the Replicate API directly
 
-#### Timeout Error
-- The server polls for completion 5 times by default
-- For larger images or busy servers, try increasing `pollingAttempts` or `pollingInterval`
-
 #### Safety Filter Triggered
 - The model has a built-in safety filter that may block certain prompts
 - Try modifying your prompt to avoid potentially problematic content
+
+#### Timeout Error
+- For larger images or busy servers, you might need to increase `pollingAttempts` or `pollingInterval` in the configuration
+- Default settings should work for most use cases
 
 ## 🤝 Contributing
 
@@ -375,6 +362,57 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 - [Recraft V3 SVG Model](https://replicate.com/recraft-ai/recraft-v3-svg)
 - [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
 - [Smithery Documentation](https://smithery.ai/docs)
+- [Glama.ai MCP Servers](https://glama.ai/mcp/servers)
+
+## 🎨 Examples
+
+![Demo](https://github.com/user-attachments/assets/ad6db606-ae3a-48db-a1cc-e1f88847769e)
+
+| Multiple Prompts | Prompt Variants |
+|-----------------|-----------------|
+| ![Multiple prompts example: "A serene mountain lake at sunset", "A bustling city street at night", "A peaceful garden in spring"](https://github.com/user-attachments/assets/e5ac56d2-bfbb-4f33-938c-a3d7bffeee60) | ![Variants example: Base prompt "A majestic castle" with modifiers "in watercolor style", "as an oil painting", "with gothic architecture"](https://github.com/user-attachments/assets/8ebe5992-4803-4bf3-a82a-251135b0698a) |
+
+Here are some examples of how to use the tools:
+
+### Batch Image Generation with `generate_multiple_images`
+
+Create multiple distinct images at once with different prompts:
+
+```json
+{
+  "prompts": [
+    "A red sports car on a mountain road", 
+    "A blue sports car on a beach", 
+    "A vintage sports car in a city street"
+  ]
+}
+```
+
+### Image Variants with `generate_image_variants`
+
+Create different interpretations of the same concept using seeds:
+
+```json
+{
+  "prompt": "A futuristic city skyline at night",
+  "num_variants": 4,
+  "seed": 42
+}
+```
+
+Or explore style variations with prompt modifiers:
+
+```json
+{
+  "prompt": "A character portrait",
+  "prompt_variations": [
+    "in anime style", 
+    "in watercolor style", 
+    "in oil painting style", 
+    "as a 3D render"
+  ]
+}
+```
 
 ---
 
