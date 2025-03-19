@@ -1,18 +1,11 @@
-# Replicate Flux MCP
+# Notion MCP Server
 
 ![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-4.9+-blue)
 ![Model Context Protocol](https://img.shields.io/badge/MCP-Enabled-purple)
-[![smithery badge](https://smithery.ai/badge/@awkoy/replicate-flux-mcp)](https://smithery.ai/server/@awkoy/replicate-flux-mcp)
-![NPM Downloads](https://img.shields.io/npm/dw/replicate-flux-mcp)
-![Stars](https://img.shields.io/github/stars/awkoy/replicate-flux-mcp)
 
-<a href="https://glama.ai/mcp/servers/ss8n1knen8">
-  <img width="380" height="200" src="https://glama.ai/mcp/servers/ss8n1knen8/badge" />
-</a>
-
-**Replicate Flux MCP** is an advanced Model Context Protocol (MCP) server that empowers AI assistants to generate high-quality images and vector graphics. Leveraging [Black Forest Labs' Flux Schnell model](https://replicate.com/black-forest-labs/flux-schnell) for raster images and [Recraft's V3 SVG model](https://replicate.com/recraft-ai/recraft-v3-svg) for vector graphics via the Replicate API.
+**Notion MCP Server** is a Model Context Protocol (MCP) server template for integrating with Notion's API. This boilerplate provides a starting point for building AI assistants that can interact with Notion.
 
 ## 📑 Table of Contents
 
@@ -20,8 +13,6 @@
   - [Setup Process](#setup-process)
   - [Cursor Integration](#cursor-integration)
   - [Claude Desktop Integration](#claude-desktop-integration)
-  - [Smithery Integration](#smithery-integration)
-  - [Glama.ai Integration](#glamaai-integration)
 - [Features](#-features)
 - [Documentation](#-documentation)
   - [Available Tools](#available-tools)
@@ -31,28 +22,30 @@
 - [Troubleshooting](#-troubleshooting)
 - [Contributing](#-contributing)
 - [License](#-license)
-- [Resources](#-resources)
-- [Examples](#-examples)
 
 ## 🚀 Getting Started & Integration
 
 ### Setup Process
 
-1. **Obtain a Replicate API Token**
-   - Sign up at [Replicate](https://replicate.com/)
-   - Create an API token in your account settings
+1. **Obtain a Notion API Key**
+   - Create an integration at [Notion Developers](https://www.notion.so/my-integrations)
+   - Copy your API key
+   
+2. **Enable Integration for Your Pages**
+   - Select an existing page or create a new one in Notion
+   - Click the "..." menu in the top right corner
+   - Go to "Connections" 
+   - Find and enable your integration from the list
+   
+   ![Notion Page Connection](page_connection.png)
 
-2. **Choose Your Integration Method**
+3. **Choose Your Integration Method**
    - Follow one of the integration options below based on your preferred MCP client
 
-3. **Ask Your AI Assistant to Generate an Image**
-   - Simply ask naturally: "Can you generate an image of a serene mountain landscape at sunset?"
-   - Or be more specific: "Please create an image showing a peaceful mountain scene with a lake reflecting the sunset colors in the foreground"
-
-4. **Explore Advanced Features**
-   - Try different parameter settings for customized results
-   - Experiment with SVG generation using `generate_svg`
-   - Use batch image generation or variant generation features
+4. **Ask Your AI Assistant to Interact with Notion**
+   - "Create a new page with today's tasks"
+   - "Update my meeting notes in Notion"
+   - "Add bullet points to my meeting notes page"
 
 ### Cursor Integration
 
@@ -63,15 +56,15 @@
 ```json
 {
   "mcpServers": {
-    "replicate-flux-mcp": {
-      "command": "env REPLICATE_API_TOKEN=YOUR_TOKEN npx",
-      "args": ["-y", "replicate-flux-mcp"]
+    "notion-mcp-server": {
+      "command": "env NOTION_TOKEN=YOUR_KEY NOTION_PAGE_ID=YOUR_PAGE_ID npx",
+      "args": ["-y", "notion-mcp-server"]
     }
   }
 }
 ```
 
-2. Replace `YOUR_TOKEN` with your actual Replicate API token
+2. Replace `YOUR_KEY` and `YOUR_PAGE_ID` with your actual Notion API key and page ID
 3. Restart Cursor to apply the changes
 
 #### Method 2: Manual Mode
@@ -82,10 +75,10 @@
 4. Enter the following command in the appropriate field:
 
 ```
-env REPLICATE_API_TOKEN=YOUR_TOKEN npx -y replicate-flux-mcp
+env NOTION_TOKEN=YOUR_KEY NOTION_PAGE_ID=YOUR_PAGE_ID npx -y notion-mcp-server
 ```
 
-5. Replace `YOUR_TOKEN` with your actual Replicate API token
+5. Replace `YOUR_KEY` and `YOUR_PAGE_ID` with your actual Notion API key and page ID
 6. Save the settings and restart Cursor if necessary
 
 ### Claude Desktop Integration
@@ -95,252 +88,141 @@ env REPLICATE_API_TOKEN=YOUR_TOKEN npx -y replicate-flux-mcp
 ```json
 {
   "mcpServers": {
-    "replicate-flux-mcp": {
+    "notion-mcp-server": {
       "command": "npx",
-      "args": ["-y", "replicate-flux-mcp"],
+      "args": ["-y", "notion-mcp-server"],
       "env": {
-        "REPLICATE_API_TOKEN": "YOUR TOKEN"
+        "NOTION_TOKEN": "YOUR_KEY",
+        "NOTION_PAGE_ID": "YOUR_PAGE_ID"
       }
     }
   }
 }
 ```
 
-2. Replace `YOUR_TOKEN` with your actual Replicate API token
+2. Replace `YOUR_KEY` and `YOUR_PAGE_ID` with your actual Notion API key and page ID
 3. Restart Claude Desktop to apply the changes
-
-### Smithery Integration
-
-This MCP server is available as a hosted service on Smithery, allowing you to use it without setting up your own server.
-
-1. Visit [Smithery](https://smithery.ai/) and create an account if you don't have one
-2. Navigate to the [Replicate Flux MCP server page](https://smithery.ai/server/@awkoy/replicate-flux-mcp)
-3. Click "Add to Workspace" to add the server to your Smithery workspace
-4. Configure your MCP client (Cursor, Claude Desktop, etc.) to use your Smithery workspace URL
-
-For more information on using Smithery with your MCP clients, visit the [Smithery documentation](https://smithery.ai/docs).
-
-### Glama.ai Integration
-
-This MCP server is also available as a hosted service on Glama.ai, providing another option to use it without local setup.
-
-1. Visit [Glama.ai](https://glama.ai/) and create an account if you don't have one
-2. Go to the [Replicate Flux MCP server page](https://glama.ai/mcp/servers/ss8n1knen8)
-3. Click "Install Server" to add the server to your workspace
-4. Configure your MCP client to use your Glama.ai workspace
-
-For more information, visit the [Glama.ai MCP servers documentation](https://glama.ai/mcp/servers).
 
 ## 🌟 Features
 
-- **🖼️ High-Quality Image Generation** - Create stunning images using Flux Schnell, a state-of-the-art AI model
-- **🎨 Vector Graphics Support** - Generate professional SVG vector graphics with Recraft V3 SVG model
-- **🤖 AI Assistant Integration** - Seamlessly enable AI assistants like Claude to generate visual content
-- **🎛️ Advanced Customization** - Fine-tune generation with controls for aspect ratio, quality, resolution, and more
+- **📝 Notion Integration** - Interact with Notion databases, pages, and blocks
 - **🔌 Universal MCP Compatibility** - Works with all MCP clients including Cursor, Claude Desktop, Cline, and Zed
-- **🔒 Secure Local Processing** - All requests are processed locally for enhanced privacy and security
-- **🔍 Comprehensive History Management** - Track, view, and retrieve your complete generation history
-- **📊 Batch Processing** - Generate multiple images from different prompts in a single request
-- **🔄 Variant Exploration** - Create and compare multiple interpretations of the same concept
-- **✏️ Prompt Engineering** - Fine-tune image variations with specialized prompt modifications
+- **🔍 Data Retrieval** - Fetch information from Notion pages, blocks, and databases
+- **✏️ Content Creation** - Create and update Notion pages and blocks
+- **📊 Block Management** - Append, update, and delete blocks within Notion pages
+- **🔄 Batch Operations** - Perform multiple operations in a single request
+- **🗑️ Archive & Restore** - Archive and restore Notion pages
+- **🔎 Search Functionality** - Search Notion pages and databases by title
 
 ## 📚 Documentation
 
 ### Available Tools
 
-#### `generate_image`
+The server provides the following tools for interacting with Notion:
 
-Generates an image based on a text prompt using the Flux Schnell model.
+#### Page Operations
 
-```typescript
-{
-  prompt: string;                // Required: Text description of the image to generate
-  seed?: number;                 // Optional: Random seed for reproducible generation
-  go_fast?: boolean;             // Optional: Run faster predictions with optimized model (default: true)
-  megapixels?: "1" | "0.25";     // Optional: Image resolution (default: "1")
-  num_outputs?: number;          // Optional: Number of images to generate (1-4) (default: 1)
-  aspect_ratio?: string;         // Optional: Aspect ratio (e.g., "16:9", "4:3") (default: "1:1")
-  output_format?: string;        // Optional: Output format ("webp", "jpg", "png") (default: "webp")
-  output_quality?: number;       // Optional: Image quality (0-100) (default: 80)
-  num_inference_steps?: number;  // Optional: Number of denoising steps (1-4) (default: 4)
-  disable_safety_checker?: boolean; // Optional: Disable safety filter (default: false)
-}
-```
+##### `create_page`
+Create a new page in Notion with specified content
 
-#### `generate_multiple_images`
+##### `archive_page`
+Archive (move to trash) a Notion page by ID
 
-Generates multiple images based on an array of prompts using the Flux Schnell model.
+##### `restore_page`
+Restore a previously archived Notion page by ID
 
-```typescript
-{
-  prompts: string[];             // Required: Array of text descriptions for images to generate (1-10 prompts)
-  seed?: number;                 // Optional: Random seed for reproducible generation
-  go_fast?: boolean;             // Optional: Run faster predictions with optimized model (default: true)
-  megapixels?: "1" | "0.25";     // Optional: Image resolution (default: "1")
-  aspect_ratio?: string;         // Optional: Aspect ratio (e.g., "16:9", "4:3") (default: "1:1")
-  output_format?: string;        // Optional: Output format ("webp", "jpg", "png") (default: "webp")
-  output_quality?: number;       // Optional: Image quality (0-100) (default: 80)
-  num_inference_steps?: number;  // Optional: Number of denoising steps (1-4) (default: 4)
-  disable_safety_checker?: boolean; // Optional: Disable safety filter (default: false)
-}
-```
+##### `search_pages`
+Search for pages and databases in Notion by title
 
-#### `generate_image_variants`
+#### Block Operations
 
-Generates multiple variants of the same image from a single prompt.
+##### `retrieve_block`
+Retrieve a block from Notion by ID
 
-```typescript
-{
-  prompt: string;                // Required: Text description for the image to generate variants of
-  num_variants: number;          // Required: Number of image variants to generate (2-10, default: 4)
-  prompt_variations?: string[];  // Optional: List of prompt modifiers to apply to variants (e.g., ["in watercolor style", "in oil painting style"])
-  variation_mode?: "append" | "replace"; // Optional: How to apply variations - 'append' adds to base prompt, 'replace' uses variations directly (default: "append")
-  seed?: number;                 // Optional: Base random seed. Each variant will use seed+variant_index
-  go_fast?: boolean;             // Optional: Run faster predictions with optimized model (default: true)
-  megapixels?: "1" | "0.25";     // Optional: Image resolution (default: "1")
-  aspect_ratio?: string;         // Optional: Aspect ratio (e.g., "16:9", "4:3") (default: "1:1")
-  output_format?: string;        // Optional: Output format ("webp", "jpg", "png") (default: "webp")
-  output_quality?: number;       // Optional: Image quality (0-100) (default: 80)
-  num_inference_steps?: number;  // Optional: Number of denoising steps (1-4) (default: 4)
-  disable_safety_checker?: boolean; // Optional: Disable safety filter (default: false)
-}
-```
+##### `retrieve_block_children`
+Retrieve the children of a block from Notion
 
-#### `generate_svg`
+##### `append_block_children`
+Append child blocks to a parent block in Notion
 
-Generates an SVG vector image based on a text prompt using the Recraft V3 SVG model.
+##### `update_block`
+Update a block's content in Notion
 
-```typescript
-{
-  prompt: string;                // Required: Text description of the SVG to generate
-  size?: string;                 // Optional: Size of the generated SVG (default: "1024x1024")
-  style?: string;                // Optional: Style of the generated image (default: "any")
-                                // Options: "any", "engraving", "line_art", "line_circuit", "linocut"
-}
-```
+##### `delete_block`
+Delete (move to trash) a block in Notion
 
-#### `prediction_list`
+#### Batch Operations
 
-Retrieves a list of your recent predictions from Replicate.
+##### `batch_append_block_children`
+Append children to multiple blocks in a single operation
 
-```typescript
-{
-  limit?: number;  // Optional: Maximum number of predictions to return (1-100) (default: 50)
-}
-```
+##### `batch_update_blocks`
+Update multiple blocks in a single operation
 
-#### `get_prediction`
+##### `batch_delete_blocks`
+Delete multiple blocks in a single operation
 
-Gets detailed information about a specific prediction.
-
-```typescript
-{
-  predictionId: string;  // Required: ID of the prediction to retrieve
-}
-```
+##### `batch_mixed_operations`
+Perform a mix of append, update, and delete operations in a single request
 
 ### Available Resources
 
-#### `imagelist`
+The server currently does not expose any resources, focusing instead on tool-based operations.
 
-Browse your history of generated images created with the Flux Schnell model.
+## 🛠 Development
 
-#### `svglist`
+1. **Clone the Repository**
+   ```
+   git clone https://github.com/awkoy/notion-mcp-server.git
+   cd notion-mcp-server
+   ```
 
-Browse your history of generated SVG images created with the Recraft V3 SVG model.
+2. **Install Dependencies**
+   ```
+   npm install
+   ```
 
-#### `predictionlist`
+3. **Set Up Environment Variables**
+   - Create a `.env` file with:
+     ```
+     NOTION_TOKEN=your_notion_api_key
+     NOTION_PAGE_ID=your_notion_page_id
+     ```
 
-Browse all your Replicate predictions history.
+4. **Build the Project**
+   ```
+   npm run build
+   ```
 
-## 💻 Development
+5. **Run the Inspector**
+   ```
+   npm run inspector
+   ```
 
-1. Clone the repository:
+## 🔧 Technical Details
 
-```bash
-git clone https://github.com/yourusername/replicate-flux-mcp.git
-cd replicate-flux-mcp
-```
+- Built using TypeScript and the MCP SDK (version 1.7.0+)
+- Uses the official Notion API client (@notionhq/client v2.3.0+)
+- Follows the Model Context Protocol specification
+- Implements tools for CRUD operations on Notion pages and blocks
+- Supports efficient batch operations for performance optimization
+- Validates input/output with Zod schemas
 
-2. Install dependencies:
+## ❓ Troubleshooting
 
-```bash
-npm install
-```
+- **Common Issues**
+  - **Authentication Errors**: Ensure your Notion token has the correct permissions and integration is enabled for your pages/databases
+  - **Page Access Issues**: Make sure your integration has been added to the pages you're attempting to access
+  - **Rate Limiting**: Notion API has rate limits - use batch operations to optimize requests
 
-3. Start development mode:
-
-```bash
-npm run dev
-```
-
-4. Build the project:
-
-```bash
-npm run build
-```
-
-5. Connect to Client:
-
-```json
-{
-  "mcpServers": {
-    "image-generation-mcp": {
-      "command": "npx",
-      "args": [
-        "/Users/{USERNAME}/{PATH_TO}/replicate-flux-mcp/build/index.js"
-      ],
-      "env": {
-        "REPLICATE_API_TOKEN": "YOUR REPLICATE API TOKEN"
-      }
-    }
-  }
-}
-```
-
-## ⚙️ Technical Details
-
-### Stack
-
-- **Model Context Protocol SDK** - Core MCP functionality for tool and resource management
-- **Replicate API** - Provides access to state-of-the-art AI image generation models
-- **TypeScript** - Ensures type safety and leverages modern JavaScript features
-- **Zod** - Implements runtime type validation for robust API interactions
-
-### Configuration
-
-The server can be configured by modifying the `CONFIG` object in `src/config/index.ts`:
-
-```javascript
-const CONFIG = {
-  serverName: "replicate-flux-mcp",
-  serverVersion: "0.1.2",
-  imageModelId: "black-forest-labs/flux-schnell",
-  svgModelId: "recraft-ai/recraft-v3-svg",
-  pollingAttempts: 25,
-  pollingInterval: 2000, // ms
-};
-```
-
-## 🔍 Troubleshooting
-
-### Common Issues
-
-#### Authentication Error
-- Ensure your `REPLICATE_API_TOKEN` is correctly set in the environment
-- Verify your token is valid by testing it with the Replicate API directly
-
-#### Safety Filter Triggered
-- The model has a built-in safety filter that may block certain prompts
-- Try modifying your prompt to avoid potentially problematic content
-
-#### Timeout Error
-- For larger images or busy servers, you might need to increase `pollingAttempts` or `pollingInterval` in the configuration
-- Default settings should work for most use cases
+- **Getting Help**
+  - Create an issue on the [GitHub repository](https://github.com/awkoy/notion-mcp-server/issues)
+  - Check the [Notion API documentation](https://developers.notion.com/reference/intro)
+  - Visit the MCP community channels for assistance
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps to contribute:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
@@ -348,73 +230,7 @@ Contributions are welcome! Please follow these steps to contribute:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-For feature requests or bug reports, please create a GitHub issue. If you like this project, consider starring the repository!
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🔗 Resources
-
-- [Model Context Protocol Documentation](https://modelcontextprotocol.io)
-- [Replicate API Documentation](https://replicate.com/docs)
-- [Flux Schnell Model](https://replicate.com/black-forest-labs/flux-schnell)
-- [Recraft V3 SVG Model](https://replicate.com/recraft-ai/recraft-v3-svg)
-- [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
-- [Smithery Documentation](https://smithery.ai/docs)
-- [Glama.ai MCP Servers](https://glama.ai/mcp/servers)
-
-## 🎨 Examples
-
-![Demo](https://github.com/user-attachments/assets/ad6db606-ae3a-48db-a1cc-e1f88847769e)
-
-| Multiple Prompts | Prompt Variants |
-|-----------------|-----------------|
-| ![Multiple prompts example: "A serene mountain lake at sunset", "A bustling city street at night", "A peaceful garden in spring"](https://github.com/user-attachments/assets/e5ac56d2-bfbb-4f33-938c-a3d7bffeee60) | ![Variants example: Base prompt "A majestic castle" with modifiers "in watercolor style", "as an oil painting", "with gothic architecture"](https://github.com/user-attachments/assets/8ebe5992-4803-4bf3-a82a-251135b0698a) |
-
-Here are some examples of how to use the tools:
-
-### Batch Image Generation with `generate_multiple_images`
-
-Create multiple distinct images at once with different prompts:
-
-```json
-{
-  "prompts": [
-    "A red sports car on a mountain road", 
-    "A blue sports car on a beach", 
-    "A vintage sports car in a city street"
-  ]
-}
-```
-
-### Image Variants with `generate_image_variants`
-
-Create different interpretations of the same concept using seeds:
-
-```json
-{
-  "prompt": "A futuristic city skyline at night",
-  "num_variants": 4,
-  "seed": 42
-}
-```
-
-Or explore style variations with prompt modifiers:
-
-```json
-{
-  "prompt": "A character portrait",
-  "prompt_variations": [
-    "in anime style", 
-    "in watercolor style", 
-    "in oil painting style", 
-    "as a 3D render"
-  ]
-}
-```
-
----
-
-Made with ❤️ by Yaroslav Boiko
 

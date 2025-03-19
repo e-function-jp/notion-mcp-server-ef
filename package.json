@@ -1,36 +1,32 @@
 {
-  "name": "replicate-flux-mcp",
-  "version": "0.1.2",
+  "name": "notion-mcp-server",
+  "version": "0.0.1",
   "type": "module",
   "bin": {
-    "replicate-flux-mcp": "build/index.js"
+    "notion-mcp-server": "build/index.js"
   },
   "scripts": {
     "build": "tsc && shx chmod +x build/*.js",
     "prepare": "npm run build",
     "watch": "tsc --watch",
-    "inspector": "npx @modelcontextprotocol/inspector build/index.js -e REPLICATE_API_TOKEN=YOUR_REPLICATE_API_TOKEN"
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js -e NOTION_TOKEN=your_notion_token -e NOTION_PAGE_ID=your_notion_page_id"
   },
-  "homepage": "https://github.com/awkoy/replicate-flux-mcp",
+  "homepage": "https://github.com/awkoy/notion-mcp-server",
   "keywords": [
-    "replicate",
-    "flux",
+    "notion",
     "mcp",
-    "flux-schnell",
-    "flux-schnell-mcp",
     "modelcontextprotocol",
-    "image-generation",
     "ai"
   ],
   "author": "Yaroslav Boiko <y.boikodeveloper@gmail.com>",
   "license": "MIT",
-  "description": "MCP for Replicate Flux Model",
+  "description": "MCP for Notion",
   "files": [
     "build"
   ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
-    "replicate": "^1.0.1",
+    "@notionhq/client": "^2.3.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -43,6 +39,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/awkoy/replicate-flux-mcp.git"
+    "url": "git+https://github.com/awkoy/notion-mcp-server.git"
   }
 }

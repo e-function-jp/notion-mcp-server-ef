@@ -1,63 +1,123 @@
-import {
-  getPredictionSchema,
-  svgGenerationSchema,
-  multiImageGenerationSchema,
-  imageVariantsGenerationSchema,
-} from "../types/index.js";
-import { predictionListSchema } from "../types/index.js";
-
 import { server } from "../server/index.js";
-import { imageGenerationSchema } from "../types/index.js";
-import { registerGetPredictionTool } from "./getPrediction.js";
-import { registerPredictionListTool } from "./predictionList.js";
-import { registerGenerateImageTool } from "./generateImage.js";
-import { createPredictionSchema } from "../types/index.js";
-import { registerCreatePredictionTool } from "./createPrediction.js";
-import { registerGenerateSvgTool } from "./generateSVG.js";
-import { registerGenerateMultipleImagesTool } from "./generateMultipleImages.js";
-import { registerGenerateImageVariantsTool } from "./generateImageVariants.js";
+import {
+  CREATE_PAGE_SCHEMA,
+  ARCHIVE_PAGE_SCHEMA,
+  RESTORE_PAGE_SCHEMA,
+  SEARCH_PAGES_SCHEMA,
+} from "../schema/page.js";
+import {
+  APPEND_BLOCK_CHILDREN_SCHEMA,
+  RETRIEVE_BLOCK_SCHEMA,
+  RETRIEVE_BLOCK_CHILDREN_SCHEMA,
+  UPDATE_BLOCK_SCHEMA,
+  DELETE_BLOCK_SCHEMA,
+  BATCH_APPEND_BLOCK_CHILDREN_SCHEMA,
+  BATCH_UPDATE_BLOCKS_SCHEMA,
+  BATCH_DELETE_BLOCKS_SCHEMA,
+  BATCH_MIXED_OPERATIONS_SCHEMA,
+} from "../schema/blocks.js";
+import { archivePage, restorePage } from "./updatePage.js";
+import { registerCreatePageTool } from "./createPage.js";
+import { searchPages } from "./searchPage.js";
+import { appendBlockChildren } from "./appendBlockChildren.js";
+import { retrieveBlock } from "./retrieveBlock.js";
+import { retrieveBlockChildren } from "./retrieveBlockChildren.js";
+import { updateBlock } from "./updateBlock.js";
+import { deleteBlock } from "./deleteBlock.js";
+import { batchAppendBlockChildren } from "./batchAppendBlockChildren.js";
+import { batchUpdateBlocks } from "./batchUpdateBlocks.js";
+import { batchDeleteBlocks } from "./batchDeleteBlocks.js";
+import { batchMixedOperations } from "./batchMixedOperations.js";
 
 export const registerAllTools = () => {
   server.tool(
-    "generate_image",
-    "Generate an image from a text prompt using Flux Schnell model",
-    imageGenerationSchema,
-    registerGenerateImageTool
+    "create_page",
+    "Create a new page in Notion",
+    CREATE_PAGE_SCHEMA,
+    registerCreatePageTool
+  );
+
+  server.tool(
+    "archive_page",
+    "Archive (trash) a Notion page",
+    ARCHIVE_PAGE_SCHEMA,
+    archivePage
+  );
+
+  server.tool(
+    "restore_page",
+    "Restore a previously archived Notion page",
+    RESTORE_PAGE_SCHEMA,
+    restorePage
+  );
+
+  server.tool(
+    "search_pages",
+    "Search for pages and databases in Notion by title",
+    SEARCH_PAGES_SCHEMA,
+    searchPages
+  );
+
+  server.tool(
+    "append_block_children",
+    "Append child blocks to a parent block in Notion",
+    APPEND_BLOCK_CHILDREN_SCHEMA,
+    appendBlockChildren
+  );
+
+  server.tool(
+    "retrieve_block",
+    "Retrieve a block from Notion by ID",
+    RETRIEVE_BLOCK_SCHEMA,
+    retrieveBlock
+  );
+
+  server.tool(
+    "retrieve_block_children",
+    "Retrieve the children of a block from Notion",
+    RETRIEVE_BLOCK_CHILDREN_SCHEMA,
+    retrieveBlockChildren
+  );
+
+  server.tool(
+    "update_block",
+    "Update a block's content in Notion",
+    UPDATE_BLOCK_SCHEMA,
+    updateBlock
+  );
+
+  server.tool(
+    "delete_block",
+    "Delete (move to trash) a block in Notion",
+    DELETE_BLOCK_SCHEMA,
+    deleteBlock
+  );
+
+  // Register batch operation tools
+  server.tool(
+    "batch_append_block_children",
+    "Append children to multiple blocks in a single operation",
+    BATCH_APPEND_BLOCK_CHILDREN_SCHEMA,
+    batchAppendBlockChildren
   );
   server.tool(
-    "generate_multiple_images",
-    "Generate multiple images from an array of prompts using Flux Schnell model",
-    multiImageGenerationSchema,
-    registerGenerateMultipleImagesTool
+    "batch_update_blocks",
+    "Update multiple blocks in a single operation",
+    BATCH_UPDATE_BLOCKS_SCHEMA,
+    batchUpdateBlocks
   );
+
   server.tool(
-    "generate_image_variants",
-    "Generate multiple variants of the same image from a single prompt",
-    imageVariantsGenerationSchema,
-    registerGenerateImageVariantsTool
+    "batch_delete_blocks",
+    "Delete multiple blocks in a single operation",
+    BATCH_DELETE_BLOCKS_SCHEMA,
+    batchDeleteBlocks
   );
+
   server.tool(
-    "generate_svg",
-    "Generate an SVG from a text prompt using Recraft model",
-    svgGenerationSchema,
-    registerGenerateSvgTool
-  );
-  server.tool(
-    "get_prediction",
-    "Get details of a specific prediction by ID",
-    getPredictionSchema,
-    registerGetPredictionTool
-  );
-  server.tool(
-    "create_prediction",
-    "Generate an prediction from a text prompt using Flux Schnell model",
-    createPredictionSchema,
-    registerCreatePredictionTool
-  );
-  server.tool(
-    "prediction_list",
-    "Get a list of recent predictions from Replicate",
-    predictionListSchema,
-    registerPredictionListTool
+    "batch_mixed_operations",
+    "Perform a mix of append, update, and delete operations in a single request",
+    BATCH_MIXED_OPERATIONS_SCHEMA,
+    batchMixedOperations
   );
 };

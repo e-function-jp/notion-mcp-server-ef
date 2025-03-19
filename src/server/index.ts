@@ -13,8 +13,8 @@ export const server = new McpServer(
       tools: {},
     },
     instructions: `
-    MCP server for the Replicate models.
-    It is used to generate images and SVGs from text prompts.
+      MCP server for the Notion.
+      It is used to create, update and delete Notion entities.
     `,
   }
 );
