@@ -3,14 +3,16 @@ import { getRootPageId } from "../services/notion.js";
 import { ICON_SCHEMA } from "./icon.js";
 import { TEXT_BLOCK_REQUEST_SCHEMA } from "./blocks.js";
 import { preprocessJson } from "./preprocess.js";
-import { TEXT_CONTENT_SCHEMA } from "./rich-text.js";
+import { TEXT_CONTENT_REQUEST_SCHEMA } from "./rich-text.js";
 import { FILE_SCHEMA } from "./file.js";
 
 export const TITLE_PROPERTY_SCHEMA = z.object({
   title: z
     .array(
       z.object({
-        text: TEXT_CONTENT_SCHEMA.describe("Text content for title segment"),
+        text: TEXT_CONTENT_REQUEST_SCHEMA.describe(
+          "Text content for title segment"
+        ),
       })
     )
     .describe("Array of text segments that make up the title"),
