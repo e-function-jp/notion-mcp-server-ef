@@ -4,8 +4,8 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-4.9+-blue)
 ![Model Context Protocol](https://img.shields.io/badge/MCP-Enabled-purple)
 [![smithery badge](https://smithery.ai/badge/@awkoy/notion-mcp-server)](https://smithery.ai/server/@awkoy/notion-mcp-server)
-![NPM Downloads](https://img.shields.io/npm/dw/replicate-flux-mcp)
-![Stars](https://img.shields.io/github/stars/awkoy/replicate-flux-mcp)
+![NPM Downloads](https://img.shields.io/npm/dw/notion-mcp-server)
+![Stars](https://img.shields.io/github/stars/awkoy/notion-mcp-server)
 
 **Notion MCP Server** is a Model Context Protocol (MCP) server implementation that enables AI assistants to interact with Notion's API. This production-ready server provides a complete set of tools and endpoints for reading, creating, and modifying Notion content through natural language interactions.
 
