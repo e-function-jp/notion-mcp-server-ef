@@ -11,6 +11,10 @@
 
 > 🚧 **Active Development**: I'm currently working on adding comprehensive database support! If you find this project useful, please consider giving it a star - it helps me know that this work is valuable to the community and motivates further development.
 
+<a href="https://glama.ai/mcp/servers/zrh07hteaa">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/zrh07hteaa/badge" />
+</a>
+
 ## 📑 Table of Contents
 
 - [Getting Started & Integration](#-getting-started--integration)
