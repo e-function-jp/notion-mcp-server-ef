@@ -4,6 +4,7 @@ import {
   CREATE_PAGE_SCHEMA,
   RESTORE_PAGE_SCHEMA,
   SEARCH_PAGES_SCHEMA,
+  UPDATE_PAGE_PROPERTIES_SCHEMA,
 } from "../schema/page.js";
 
 export const createPageSchema = z.object(CREATE_PAGE_SCHEMA);
@@ -17,3 +18,10 @@ export type RestorePageParams = z.infer<typeof restorePageSchema>;
 
 export const searchPagesSchema = z.object(SEARCH_PAGES_SCHEMA);
 export type SearchPagesParams = z.infer<typeof searchPagesSchema>;
+
+export const updatePagePropertiesSchema = z.object(
+  UPDATE_PAGE_PROPERTIES_SCHEMA
+);
+export type UpdatePagePropertiesParams = z.infer<
+  typeof updatePagePropertiesSchema
+>;

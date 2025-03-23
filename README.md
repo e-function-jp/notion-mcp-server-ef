@@ -9,7 +9,7 @@
 
 **Notion MCP Server** is a Model Context Protocol (MCP) server implementation that enables AI assistants to interact with Notion's API. This production-ready server provides a complete set of tools and endpoints for reading, creating, and modifying Notion content through natural language interactions.
 
-> 🚧 **Active Development**: I'm currently working on adding comprehensive database support! If you find this project useful, please consider giving it a star - it helps me know that this work is valuable to the community and motivates further development.
+> 🚧 **Active Development**: Database support is now available! If you find this project useful, please consider giving it a star - it helps me know that this work is valuable to the community and motivates further development.
 
 <a href="https://glama.ai/mcp/servers/zrh07hteaa">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/zrh07hteaa/badge" />
@@ -54,6 +54,8 @@
    - "Create a new page with today's tasks"
    - "Update my meeting notes in Notion"
    - "Add bullet points to my meeting notes page"
+   - "Create a new database for tracking projects"
+   - "Add new entries to my task database"
 
 ### Cursor Integration
 
@@ -118,6 +120,7 @@ env NOTION_TOKEN=YOUR_KEY NOTION_PAGE_ID=YOUR_PAGE_ID npx -y notion-mcp-server
 - **🔍 Data Retrieval** - Fetch information from Notion pages, blocks, and databases
 - **✏️ Content Creation** - Create and update Notion pages and blocks
 - **📊 Block Management** - Append, update, and delete blocks within Notion pages
+- **💾 Database Operations** - Create, query, and update databases
 - **🔄 Batch Operations** - Perform multiple operations in a single request
 - **🗑️ Archive & Restore** - Archive and restore Notion pages
 - **🔎 Search Functionality** - Search Notion pages and databases by title
@@ -133,6 +136,9 @@ The server provides the following tools for interacting with Notion:
 ##### `create_page`
 Create a new page in Notion with specified content
 
+##### `update_page_properties`
+Update the properties of an existing Notion page
+
 ##### `archive_page`
 Archive (move to trash) a Notion page by ID
 
@@ -141,6 +147,17 @@ Restore a previously archived Notion page by ID
 
 ##### `search_pages`
 Search for pages and databases in Notion by title
+
+#### Database Operations
+
+##### `create_database`
+Create a new database in Notion with specified properties
+
+##### `query_database`
+Query a database in Notion with filters, sorts, and pagination
+
+##### `update_database`
+Update an existing database's properties, title, or description
 
 #### Block Operations
 
@@ -212,7 +229,7 @@ The server currently does not expose any resources, focusing instead on tool-bas
 - Built using TypeScript and the MCP SDK (version 1.7.0+)
 - Uses the official Notion API client (@notionhq/client v2.3.0+)
 - Follows the Model Context Protocol specification
-- Implements tools for CRUD operations on Notion pages and blocks
+- Implements tools for CRUD operations on Notion pages, blocks, and databases
 - Supports efficient batch operations for performance optimization
 - Validates input/output with Zod schemas
 

@@ -4,6 +4,7 @@ import {
   ARCHIVE_PAGE_SCHEMA,
   RESTORE_PAGE_SCHEMA,
   SEARCH_PAGES_SCHEMA,
+  UPDATE_PAGE_PROPERTIES_SCHEMA,
 } from "../schema/page.js";
 import {
   APPEND_BLOCK_CHILDREN_SCHEMA,
@@ -16,6 +17,11 @@ import {
   BATCH_DELETE_BLOCKS_SCHEMA,
   BATCH_MIXED_OPERATIONS_SCHEMA,
 } from "../schema/blocks.js";
+import {
+  CREATE_DATABASE_SCHEMA,
+  QUERY_DATABASE_SCHEMA,
+  UPDATE_DATABASE_SCHEMA,
+} from "../schema/database.js";
 import { archivePage, restorePage } from "./updatePage.js";
 import { registerCreatePageTool } from "./createPage.js";
 import { searchPages } from "./searchPage.js";
@@ -28,6 +34,10 @@ import { batchAppendBlockChildren } from "./batchAppendBlockChildren.js";
 import { batchUpdateBlocks } from "./batchUpdateBlocks.js";
 import { batchDeleteBlocks } from "./batchDeleteBlocks.js";
 import { batchMixedOperations } from "./batchMixedOperations.js";
+import { createDatabase } from "./createDatabase.js";
+import { queryDatabase } from "./queryDatabase.js";
+import { updateDatabase } from "./updateDatabase.js";
+import { updatePageProperties } from "./updatePageProperties.js";
 
 export const registerAllTools = () => {
   server.tool(
@@ -42,6 +52,13 @@ export const registerAllTools = () => {
     "Archive (trash) a Notion page",
     ARCHIVE_PAGE_SCHEMA,
     archivePage
+  );
+
+  server.tool(
+    "update_page_properties",
+    "Update the properties of a Notion page",
+    UPDATE_PAGE_PROPERTIES_SCHEMA,
+    updatePageProperties
   );
 
   server.tool(
@@ -91,6 +108,28 @@ export const registerAllTools = () => {
     "Delete (move to trash) a block in Notion",
     DELETE_BLOCK_SCHEMA,
     deleteBlock
+  );
+
+  // Register database tools
+  server.tool(
+    "create_database",
+    "Create a new database in Notion",
+    CREATE_DATABASE_SCHEMA,
+    createDatabase
+  );
+
+  server.tool(
+    "query_database",
+    "Query a database in Notion",
+    QUERY_DATABASE_SCHEMA,
+    queryDatabase
+  );
+
+  server.tool(
+    "update_database",
+    "Update a database in Notion",
+    UPDATE_DATABASE_SCHEMA,
+    updateDatabase
   );
 
   // Register batch operation tools

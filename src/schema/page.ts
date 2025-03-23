@@ -5,6 +5,19 @@ import { TEXT_BLOCK_REQUEST_SCHEMA } from "./blocks.js";
 import { preprocessJson } from "./preprocess.js";
 import { TEXT_CONTENT_REQUEST_SCHEMA } from "./rich-text.js";
 import { FILE_SCHEMA } from "./file.js";
+import {
+  CHECKBOX_PROPERTY_VALUE_SCHEMA,
+  DATE_PROPERTY_VALUE_SCHEMA,
+  EMAIL_PROPERTY_VALUE_SCHEMA,
+  FILES_PROPERTY_VALUE_SCHEMA,
+  NUMBER_PROPERTY_VALUE_SCHEMA,
+  PEOPLE_PROPERTY_VALUE_SCHEMA,
+  PHONE_NUMBER_PROPERTY_VALUE_SCHEMA,
+  RELATION_PROPERTY_VALUE_SCHEMA,
+  RICH_TEXT_PROPERTY_VALUE_SCHEMA,
+  SELECT_PROPERTY_VALUE_SCHEMA,
+  STATUS_PROPERTY_VALUE_SCHEMA,
+} from "./page-properties.js";
 
 export const TITLE_PROPERTY_SCHEMA = z.object({
   title: z
@@ -42,9 +55,23 @@ export const CREATE_PAGE_SCHEMA = {
       "Optional parent - if not provided, will use NOTION_PAGE_ID as parent page"
     ),
   properties: z
-    .object({
-      title: TITLE_PROPERTY_SCHEMA.describe("The title of the page"),
-    })
+    .record(
+      z.string().describe("Property name"),
+      z.union([
+        TITLE_PROPERTY_SCHEMA,
+        CHECKBOX_PROPERTY_VALUE_SCHEMA,
+        EMAIL_PROPERTY_VALUE_SCHEMA,
+        STATUS_PROPERTY_VALUE_SCHEMA,
+        FILES_PROPERTY_VALUE_SCHEMA,
+        DATE_PROPERTY_VALUE_SCHEMA,
+        PEOPLE_PROPERTY_VALUE_SCHEMA,
+        PHONE_NUMBER_PROPERTY_VALUE_SCHEMA,
+        RELATION_PROPERTY_VALUE_SCHEMA,
+        RICH_TEXT_PROPERTY_VALUE_SCHEMA,
+        SELECT_PROPERTY_VALUE_SCHEMA,
+        NUMBER_PROPERTY_VALUE_SCHEMA,
+      ])
+    )
     .describe("Properties of the page"),
   children: z
     .array(TEXT_BLOCK_REQUEST_SCHEMA)
@@ -68,6 +95,29 @@ export const ARCHIVE_PAGE_SCHEMA = {
 
 export const RESTORE_PAGE_SCHEMA = {
   pageId: z.string().describe("The ID of the page to restore"),
+};
+
+export const UPDATE_PAGE_PROPERTIES_SCHEMA = {
+  pageId: z.string().describe("The ID of the page to restore"),
+  properties: z
+    .record(
+      z.string().describe("Property name"),
+      z.union([
+        TITLE_PROPERTY_SCHEMA,
+        CHECKBOX_PROPERTY_VALUE_SCHEMA,
+        EMAIL_PROPERTY_VALUE_SCHEMA,
+        STATUS_PROPERTY_VALUE_SCHEMA,
+        FILES_PROPERTY_VALUE_SCHEMA,
+        DATE_PROPERTY_VALUE_SCHEMA,
+        PEOPLE_PROPERTY_VALUE_SCHEMA,
+        PHONE_NUMBER_PROPERTY_VALUE_SCHEMA,
+        RELATION_PROPERTY_VALUE_SCHEMA,
+        RICH_TEXT_PROPERTY_VALUE_SCHEMA,
+        SELECT_PROPERTY_VALUE_SCHEMA,
+        NUMBER_PROPERTY_VALUE_SCHEMA,
+      ])
+    )
+    .describe("Properties of the page"),
 };
 
 export const SEARCH_PAGES_SCHEMA = {
