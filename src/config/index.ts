@@ -1,5 +1,5 @@
 // Configuration
 export const CONFIG = {
   serverName: "notion-mcp-server",
-  serverVersion: "0.0.2",
+  serverVersion: "1.0.0",
 };
