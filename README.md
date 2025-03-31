@@ -9,7 +9,7 @@
 
 **Notion MCP Server** is a Model Context Protocol (MCP) server implementation that enables AI assistants to interact with Notion's API. This production-ready server provides a complete set of tools and endpoints for reading, creating, and modifying Notion content through natural language interactions.
 
-> 🚧 **Active Development**: Database support is now available! If you find this project useful, please consider giving it a star - it helps me know that this work is valuable to the community and motivates further development.
+> 🚧 **Active Development**: Database support is now available! Comments and user management tools have been added. If you find this project useful, please consider giving it a star - it helps me know that this work is valuable to the community and motivates further development.
 
 <a href="https://glama.ai/mcp/servers/zrh07hteaa">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/zrh07hteaa/badge" />
@@ -56,6 +56,10 @@
    - "Add bullet points to my meeting notes page"
    - "Create a new database for tracking projects"
    - "Add new entries to my task database"
+   - "Add a comment to my project page"
+   - "Show me all comments on this document"
+   - "List all users in my workspace"
+   - "Get information about a specific user"
 
 ### Cursor Integration
 
@@ -124,6 +128,8 @@ env NOTION_TOKEN=YOUR_KEY NOTION_PAGE_ID=YOUR_PAGE_ID npx -y notion-mcp-server
 - **🔄 Batch Operations** - Perform multiple operations in a single request
 - **🗑️ Archive & Restore** - Archive and restore Notion pages
 - **🔎 Search Functionality** - Search Notion pages and databases by title
+- **💬 Comments Management** - Get, create, and reply to comments on pages and discussions
+- **👥 User Management** - Retrieve workspace users and user information
 
 ## 📚 Documentation
 
@@ -189,6 +195,28 @@ Delete multiple blocks in a single operation
 
 ##### `batch_mixed_operations`
 Perform a mix of append, update, and delete operations in a single request
+
+#### Comment Operations
+
+##### `get_comments`
+Retrieve comments from a page or block with pagination support
+
+##### `add_page_comment`
+Add a new comment to a Notion page
+
+##### `add_discussion_comment`
+Add a comment to an existing discussion thread
+
+#### User Operations
+
+##### `get_list_users`
+Retrieve a paginated list of all users in the workspace
+
+##### `get_user`
+Get detailed information about a specific user by ID
+
+##### `get_bot_user`
+Retrieve the current bot user associated with the API token
 
 ### Available Resources
 

@@ -9,10 +9,6 @@ export async function searchPages(
   try {
     const response = await notion.search({
       query: params.query || "",
-      filter: {
-        value: "page",
-        property: "object",
-      },
       sort: params.sort,
       start_cursor: params.start_cursor,
       page_size: params.page_size || 10,

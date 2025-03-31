@@ -38,6 +38,20 @@ import { createDatabase } from "./createDatabase.js";
 import { queryDatabase } from "./queryDatabase.js";
 import { updateDatabase } from "./updateDatabase.js";
 import { updatePageProperties } from "./updatePageProperties.js";
+import {
+  registerAddDiscussionCommentTool,
+  registerAddPageCommentTool,
+  registerGetCommentsTool,
+} from "./comments.js";
+import {
+  ADD_DISCUSSION_COMMENT_SCHEMA,
+  ADD_PAGE_COMMENT_SCHEMA,
+  GET_COMMENTS_SCHEMA,
+} from "../schema/comments.js";
+import { registerGetListUsersTool } from "./users.js";
+import { LIST_USERS_SCHEMA } from "../schema/users.js";
+import { registerGetBotUserTool, registerGetUserTool } from "./users.js";
+import { GET_USER_SCHEMA } from "../schema/users.js";
 
 export const registerAllTools = () => {
   server.tool(
@@ -158,5 +172,47 @@ export const registerAllTools = () => {
     "Perform a mix of append, update, and delete operations in a single request",
     BATCH_MIXED_OPERATIONS_SCHEMA,
     batchMixedOperations
+  );
+
+  server.tool(
+    "get_comments",
+    "Get comments for a page or discussion",
+    GET_COMMENTS_SCHEMA,
+    registerGetCommentsTool
+  );
+
+  server.tool(
+    "add_page_comment",
+    "Add a comment to a page",
+    ADD_PAGE_COMMENT_SCHEMA,
+    registerAddPageCommentTool
+  );
+
+  server.tool(
+    "add_discussion_comment",
+    "Add a comment to a discussion",
+    ADD_DISCUSSION_COMMENT_SCHEMA,
+    registerAddDiscussionCommentTool
+  );
+
+  server.tool(
+    "get_list_users",
+    "Get a list of users in Notion",
+    LIST_USERS_SCHEMA,
+    registerGetListUsersTool
+  );
+
+  server.tool(
+    "get_user",
+    "Get a user in Notion",
+    GET_USER_SCHEMA,
+    registerGetUserTool
+  );
+
+  server.tool(
+    "get_bot_user",
+    "Get the bot user in Notion",
+    {},
+    registerGetBotUserTool
   );
 };
