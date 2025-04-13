@@ -6,7 +6,6 @@ import {
   ListUsersParams,
   UsersOperationParams,
 } from "../types/users.js";
-import { sendLog } from "../services/loggs.js";
 
 export const registerGetListUsersTool = async (
   params: ListUsersParams
@@ -79,8 +78,6 @@ export const registerGetBotUserTool = async (): Promise<CallToolResult> => {
 export const registerUsersOperationTool = async (
   params: UsersOperationParams
 ): Promise<CallToolResult> => {
-  sendLog("info", "Users operation tool called with params", params);
-
   switch (params.payload.action) {
     case "list_users":
       return registerGetListUsersTool(params.payload.params);
