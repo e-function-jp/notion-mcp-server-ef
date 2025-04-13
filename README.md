@@ -135,88 +135,107 @@ env NOTION_TOKEN=YOUR_KEY NOTION_PAGE_ID=YOUR_PAGE_ID npx -y notion-mcp-server
 
 ### Available Tools
 
-The server provides the following tools for interacting with Notion:
+The server provides the following consolidated tools for interacting with Notion:
 
-#### Page Operations
+#### `notion_pages`
 
-##### `create_page`
-Create a new page in Notion with specified content
+A comprehensive tool for page operations including:
+- Creating new pages with specified content
+- Updating page properties
+- Archiving pages (moving to trash)
+- Restoring previously archived pages
+- Searching for pages by title
 
-##### `update_page_properties`
-Update the properties of an existing Notion page
+Example operations:
+```javascript
+{
+  "payload": {
+    "action": "create_page", // One of: "create_page", "archive_page", "restore_page", "search_pages", "update_page_properties"
+    "params": {
+      // Parameters specific to the chosen action
+    }
+  }
+}
+```
 
-##### `archive_page`
-Archive (move to trash) a Notion page by ID
+#### `notion_blocks`
 
-##### `restore_page`
-Restore a previously archived Notion page by ID
+A complete toolkit for block operations including:
+- Retrieving block content
+- Fetching child blocks
+- Appending new blocks to a parent
+- Updating existing blocks
+- Deleting blocks
+- Performing batch operations (append, update, delete, mixed)
 
-##### `search_pages`
-Search for pages and databases in Notion by title
+Example operations:
+```javascript
+{
+  "payload": {
+    "action": "append_block_children", // One of: "append_block_children", "retrieve_block", "retrieve_block_children", "update_block", "delete_block", "batch_append_block_children", "batch_update_blocks", "batch_delete_blocks", "batch_mixed_operations"
+    "params": {
+      // Parameters specific to the chosen action
+    }
+  }
+}
+```
 
-#### Database Operations
+#### `notion_database`
 
-##### `create_database`
-Create a new database in Notion with specified properties
+A powerful tool for database interactions including:
+- Creating new databases with custom properties
+- Querying databases with filters and sorting
+- Updating database structure and properties
 
-##### `query_database`
-Query a database in Notion with filters, sorts, and pagination
+Example operations:
+```javascript
+{
+  "payload": {
+    "action": "create_database", // One of: "create_database", "query_database", "update_database"
+    "params": {
+      // Parameters specific to the chosen action
+    }
+  }
+}
+```
 
-##### `update_database`
-Update an existing database's properties, title, or description
+#### `notion_comments`
 
-#### Block Operations
+A tool for managing comments on Notion content:
+- Retrieving comments from pages and blocks
+- Adding new comments to pages
+- Replying to existing discussions
 
-##### `retrieve_block`
-Retrieve a block from Notion by ID
+Example operations:
+```javascript
+{
+  "payload": {
+    "action": "get_comments", // One of: "get_comments", "add_page_comment", "add_discussion_comment"
+    "params": {
+      // Parameters specific to the chosen action
+    }
+  }
+}
+```
 
-##### `retrieve_block_children`
-Retrieve the children of a block from Notion
+#### `notion_users`
 
-##### `append_block_children`
-Append child blocks to a parent block in Notion
+A tool for accessing user information:
+- Listing all workspace users
+- Getting details about specific users
+- Retrieving information about the current bot user
 
-##### `update_block`
-Update a block's content in Notion
-
-##### `delete_block`
-Delete (move to trash) a block in Notion
-
-#### Batch Operations
-
-##### `batch_append_block_children`
-Append children to multiple blocks in a single operation
-
-##### `batch_update_blocks`
-Update multiple blocks in a single operation
-
-##### `batch_delete_blocks`
-Delete multiple blocks in a single operation
-
-##### `batch_mixed_operations`
-Perform a mix of append, update, and delete operations in a single request
-
-#### Comment Operations
-
-##### `get_comments`
-Retrieve comments from a page or block with pagination support
-
-##### `add_page_comment`
-Add a new comment to a Notion page
-
-##### `add_discussion_comment`
-Add a comment to an existing discussion thread
-
-#### User Operations
-
-##### `get_list_users`
-Retrieve a paginated list of all users in the workspace
-
-##### `get_user`
-Get detailed information about a specific user by ID
-
-##### `get_bot_user`
-Retrieve the current bot user associated with the API token
+Example operations:
+```javascript
+{
+  "payload": {
+    "action": "list_users", // One of: "list_users", "get_user", "get_bot_user"
+    "params": {
+      // Parameters specific to the chosen action
+    }
+  }
+}
+```
 
 ### Available Resources
 
