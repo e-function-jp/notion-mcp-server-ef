@@ -3,6 +3,7 @@ import {
   GET_COMMENTS_SCHEMA,
   ADD_PAGE_COMMENT_SCHEMA,
   ADD_DISCUSSION_COMMENT_SCHEMA,
+  COMMENTS_OPERATION_SCHEMA,
 } from "../schema/comments.js";
 
 // Types inferred from the schemas
@@ -18,3 +19,6 @@ export const addDiscussionCommentSchema = z.object(
 export type AddDiscussionCommentParams = z.infer<
   typeof addDiscussionCommentSchema
 >;
+
+export const commentsOperationSchema = z.object(COMMENTS_OPERATION_SCHEMA);
+export type CommentsOperationParams = z.infer<typeof commentsOperationSchema>;

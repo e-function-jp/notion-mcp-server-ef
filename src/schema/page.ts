@@ -137,3 +137,50 @@ export const SEARCH_PAGES_SCHEMA = {
     .optional()
     .describe("Number of results to return (1-100)"),
 };
+
+// Combined schema for all page operations
+export const PAGES_OPERATION_SCHEMA = {
+  payload: z
+    .preprocess(
+      preprocessJson,
+      z.discriminatedUnion("action", [
+        z.object({
+          action: z
+            .literal("create_page")
+            .describe("Use this action to create a new page in the database."),
+          params: z.object(CREATE_PAGE_SCHEMA),
+        }),
+        z.object({
+          action: z
+            .literal("archive_page")
+            .describe(
+              "Use this action to archive an existing page, making it inactive."
+            ),
+          params: z.object(ARCHIVE_PAGE_SCHEMA),
+        }),
+        z.object({
+          action: z
+            .literal("restore_page")
+            .describe("Use this action to restore a previously archived page."),
+          params: z.object(RESTORE_PAGE_SCHEMA),
+        }),
+        z.object({
+          action: z
+            .literal("search_pages")
+            .describe("Use this action to search for pages based on a query."),
+          params: z.object(SEARCH_PAGES_SCHEMA),
+        }),
+        z.object({
+          action: z
+            .literal("update_page_properties")
+            .describe(
+              "Use this action to update the properties of an existing page."
+            ),
+          params: z.object(UPDATE_PAGE_PROPERTIES_SCHEMA),
+        }),
+      ])
+    )
+    .describe(
+      "A union of all possible page operations. Each operation has a specific action and corresponding parameters. Use this schema to validate the input for page operations such as creating, archiving, restoring, searching, and updating pages. Available actions include: 'create_page', 'archive_page', 'restore_page', 'search_pages', and 'update_page_properties'. Each operation requires specific parameters as defined in the corresponding schemas."
+    ),
+};

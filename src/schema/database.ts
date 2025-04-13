@@ -431,3 +431,34 @@ export const UPDATE_DATABASE_SCHEMA = {
       .describe("Updated cover image for the database")
   ),
 };
+
+// Combined schema for all database operations
+export const DATABASE_OPERATION_SCHEMA = {
+  payload: z
+    .preprocess(
+      preprocessJson,
+      z.discriminatedUnion("action", [
+        z.object({
+          action: z
+            .literal("create_database")
+            .describe("Use this action to create a new database."),
+          params: z.object(CREATE_DATABASE_SCHEMA),
+        }),
+        z.object({
+          action: z
+            .literal("query_database")
+            .describe("Use this action to query a database."),
+          params: z.object(QUERY_DATABASE_SCHEMA),
+        }),
+        z.object({
+          action: z
+            .literal("update_database")
+            .describe("Use this action to update a database."),
+          params: z.object(UPDATE_DATABASE_SCHEMA),
+        }),
+      ])
+    )
+    .describe(
+      "A union of all possible database operations. Each operation has a specific action and corresponding parameters. Use this schema to validate the input for database operations such as creating, querying, and updating databases. Available actions include: 'create_database', 'query_database', and 'update_database'. Each operation requires specific parameters as defined in the corresponding schemas."
+    ),
+};

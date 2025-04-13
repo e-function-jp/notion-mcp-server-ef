@@ -1,7 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { CONFIG } from "../config/index.js";
-
 export const server = new McpServer(
   {
     name: CONFIG.serverName,
@@ -23,7 +22,7 @@ export async function startServer() {
   try {
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    console.error(
+    console.log(
       `${CONFIG.serverName} v${CONFIG.serverVersion} running on stdio`
     );
   } catch (error) {

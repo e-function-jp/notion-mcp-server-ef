@@ -9,6 +9,7 @@ import {
   BATCH_UPDATE_BLOCKS_SCHEMA,
   BATCH_DELETE_BLOCKS_SCHEMA,
   BATCH_MIXED_OPERATIONS_SCHEMA,
+  BLOCKS_OPERATION_SCHEMA,
 } from "../schema/blocks.js";
 
 export const appendBlockChildrenSchema = z.object(APPEND_BLOCK_CHILDREN_SCHEMA);
@@ -51,3 +52,6 @@ export const batchMixedOperationsSchema = z.object(
 export type BatchMixedOperationsParams = z.infer<
   typeof batchMixedOperationsSchema
 >;
+
+export const blocksOperationSchema = z.object(BLOCKS_OPERATION_SCHEMA);
+export type BlocksOperationParams = z.infer<typeof blocksOperationSchema>;
