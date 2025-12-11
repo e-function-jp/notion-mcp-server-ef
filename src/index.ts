@@ -1,12 +1,24 @@
 #!/usr/bin/env node
-import { startServer } from "./server/index.js";
-import { registerAllTools } from "./tools/index.js";
-
-registerAllTools();
+import { getTransportMode } from "./config/index.js";
+import { server, createMcpServer } from "./server/index.js";
+import { startStdioServer } from "./server/stdio.js";
+import { startHttpServer } from "./server/http.js";
+import { registerAllTools, registerAllToolsForServer } from "./tools/index.js";
 
 async function main() {
+  const mode = getTransportMode();
+
   try {
-    await startServer();
+    if (mode === "http") {
+      // HTTP mode: create a fresh server instance
+      const httpServer = createMcpServer();
+      await registerAllToolsForServer(httpServer);
+      await startHttpServer(httpServer);
+    } else {
+      // stdio mode: use default server instance (backward compatible)
+      await registerAllTools();
+      await startStdioServer(server);
+    }
   } catch (error) {
     console.error(
       "Unhandled server error:",

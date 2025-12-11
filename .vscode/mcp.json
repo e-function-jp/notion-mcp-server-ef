@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "notion-mcp-server": {
+      "type": "http",
+      "url": "https://mcpnotion.e-function.jp/mcp"
+    }
+  }
+}
