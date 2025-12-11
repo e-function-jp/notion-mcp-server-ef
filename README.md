@@ -1,4 +1,9 @@
-# Notion MCP Server
+# Notion MCP Server EF
+
+This project is a fork of https://github.com/awkoy/notion-mcp-server.
+Adds Markdown conversion features and additional tooling.
+
+-----
 
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![TypeScript](https://img.shields.io/badge/TypeScript-4.9+-blue)
