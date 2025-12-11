@@ -1,0 +1,20 @@
+# Notion MCP Server - PHP Proxy Routing
+# XServer does not support mod_proxy in .htaccess
+# All requests are routed through proxy.php
+
+RewriteEngine On
+
+# HTTPS強制（SSL証明書発行後に有効化）
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# proxy.php自体へのリクエストはそのまま
+RewriteRule ^proxy\.php$ - [L]
+
+# 全てのリクエストをproxy.phpに転送
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ proxy.php/$1 [L,QSA]
+
+# 既存ファイル（health, mcp等のルート）もproxy.phpへ
+RewriteRule ^(health|mcp)$ proxy.php/$1 [L,QSA]
