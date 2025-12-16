@@ -9,6 +9,8 @@
     "build": "tsc && shx chmod +x build/*.js",
     "prepare": "npm run build",
     "watch": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "inspector": "npx @modelcontextprotocol/inspector build/index.js -e NOTION_TOKEN=your_notion_token -e NOTION_PAGE_ID=your_notion_page_id"
   },
   "homepage": "https://github.com/awkoy/notion-mcp-server",
@@ -28,16 +30,20 @@
     "@modelcontextprotocol/sdk": "^1.24.3",
     "@notionhq/client": "^2.3.0",
     "express": "^5.2.1",
+    "marked": "^17.0.1",
+    "notion-to-md": "^3.1.9",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
+    "@types/marked": "^5.0.2",
     "@types/node": "^22.13.10",
     "shx": "^0.3.4",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vitest": "^2.1.9"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=16"
   },
   "repository": {
     "type": "git",

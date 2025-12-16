@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   APPEND_BLOCK_CHILDREN_SCHEMA,
+  APPEND_BLOCK_CHILDREN_VALIDATED_SCHEMA,
   RETRIEVE_BLOCK_SCHEMA,
   RETRIEVE_BLOCK_CHILDREN_SCHEMA,
   UPDATE_BLOCK_SCHEMA,
@@ -12,10 +13,14 @@ import {
   BLOCKS_OPERATION_SCHEMA,
 } from "../schema/blocks.js";
 
-export const appendBlockChildrenSchema = z.object(APPEND_BLOCK_CHILDREN_SCHEMA);
+// Use validated schema with mutual exclusivity refinement (children XOR markdown, at least one required)
+export const appendBlockChildrenSchema = APPEND_BLOCK_CHILDREN_VALIDATED_SCHEMA;
 export type AppendBlockChildrenParams = z.infer<
   typeof appendBlockChildrenSchema
 >;
+
+// Also export the raw schema for cases where validation is handled elsewhere
+export const appendBlockChildrenSchemaRaw = z.object(APPEND_BLOCK_CHILDREN_SCHEMA);
 
 export const retrieveBlockSchema = z.object(RETRIEVE_BLOCK_SCHEMA);
 export type RetrieveBlockParams = z.infer<typeof retrieveBlockSchema>;

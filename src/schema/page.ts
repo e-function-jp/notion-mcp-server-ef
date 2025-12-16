@@ -5,6 +5,7 @@ import { TEXT_BLOCK_REQUEST_SCHEMA } from "./blocks.js";
 import { preprocessJson } from "./preprocess.js";
 import { TEXT_CONTENT_REQUEST_SCHEMA } from "./rich-text.js";
 import { FILE_SCHEMA } from "./file.js";
+import { getMarkdownMaxChars } from "../config/index.js";
 import {
   CHECKBOX_PROPERTY_VALUE_SCHEMA,
   DATE_PROPERTY_VALUE_SCHEMA,
@@ -76,7 +77,14 @@ export const CREATE_PAGE_SCHEMA = {
   children: z
     .array(TEXT_BLOCK_REQUEST_SCHEMA)
     .optional()
-    .describe("Optional array of paragraph blocks to add as page content"),
+    .describe("Optional array of paragraph blocks to add as page content. Cannot be used together with 'markdown'."),
+  markdown: z
+    .string()
+    .max(getMarkdownMaxChars())
+    .optional()
+    .describe(
+      `Optional Markdown text to convert to page content blocks. Supports headings (#, ##, ###), paragraphs, bold (**text**), italic (*text*), code blocks (\`\`\`), blockquotes (>), lists (-, *, 1.), task lists (- [ ], - [x]), horizontal rules (---), and images (![alt](url)). Cannot be used together with 'children'. Maximum ${getMarkdownMaxChars()} characters.`
+    ),
   icon: z.preprocess(
     preprocessJson,
     ICON_SCHEMA.nullable().optional().describe("Optional icon for the page")
@@ -88,6 +96,20 @@ export const CREATE_PAGE_SCHEMA = {
       .describe("Optional cover image for the page")
   ),
 };
+
+/**
+ * Zod schema for CREATE_PAGE with mutual exclusivity and required validation.
+ * Ensures exactly one of 'children' or 'markdown' is provided (XOR).
+ */
+export const CREATE_PAGE_VALIDATED_SCHEMA = z.object(CREATE_PAGE_SCHEMA)
+  .refine(
+    (data) => data.children || data.markdown,
+    { message: "Either 'children' or 'markdown' must be provided." }
+  )
+  .refine(
+    (data) => !(data.children && data.markdown),
+    { message: "Cannot specify both 'children' and 'markdown'. Use one or the other." }
+  );
 
 export const ARCHIVE_PAGE_SCHEMA = {
   pageId: z.string().describe("The ID of the page to archive"),
@@ -136,6 +158,29 @@ export const SEARCH_PAGES_SCHEMA = {
     .max(100)
     .optional()
     .describe("Number of results to return (1-100)"),
+  markdown: z
+    .boolean()
+    .optional()
+    .describe(
+      "If true, return page content as Markdown for each result. Default: false. Note: This may increase response time as content must be fetched for each page."
+    ),
+};
+
+export const REWRITE_PAGE_SCHEMA = {
+  pageId: z.string().describe("The ID of the page to rewrite"),
+  markdown: z
+    .string()
+    .max(getMarkdownMaxChars())
+    .describe(
+      `The new Markdown content for the entire page. Existing content will be deleted and replaced. Supports headings, paragraphs, bold, italic, code blocks, blockquotes, lists, task lists, horizontal rules, and images. Maximum ${getMarkdownMaxChars()} characters.`
+    ),
+  validateBeforeDelete: z
+    .boolean()
+    .optional()
+    .default(true)
+    .describe(
+      "If true, validates Markdown conversion before deleting existing content. Default: true."
+    ),
 };
 
 // Combined schema for all page operations
@@ -148,7 +193,7 @@ export const PAGES_OPERATION_SCHEMA = {
           action: z
             .literal("create_page")
             .describe("Use this action to create a new page in the database."),
-          params: z.object(CREATE_PAGE_SCHEMA),
+          params: CREATE_PAGE_VALIDATED_SCHEMA,
         }),
         z.object({
           action: z
@@ -178,9 +223,17 @@ export const PAGES_OPERATION_SCHEMA = {
             ),
           params: z.object(UPDATE_PAGE_PROPERTIES_SCHEMA),
         }),
+        z.object({
+          action: z
+            .literal("rewrite_page")
+            .describe(
+              "Use this action to replace entire page content with Markdown. Existing blocks will be deleted and replaced with the new Markdown content."
+            ),
+          params: z.object(REWRITE_PAGE_SCHEMA),
+        }),
       ])
     )
     .describe(
-      "A union of all possible page operations. Each operation has a specific action and corresponding parameters. Use this schema to validate the input for page operations such as creating, archiving, restoring, searching, and updating pages. Available actions include: 'create_page', 'archive_page', 'restore_page', 'search_pages', and 'update_page_properties'. Each operation requires specific parameters as defined in the corresponding schemas."
+      "A union of all possible page operations. Each operation has a specific action and corresponding parameters. Use this schema to validate the input for page operations such as creating, archiving, restoring, searching, updating, and rewriting pages. Available actions include: 'create_page', 'archive_page', 'restore_page', 'search_pages', 'update_page_properties', and 'rewrite_page'. Each operation requires specific parameters as defined in the corresponding schemas."
     ),
 };

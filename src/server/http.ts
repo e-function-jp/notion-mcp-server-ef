@@ -39,33 +39,45 @@ export async function startHttpServer(server: McpServer): Promise<void> {
   // MCP endpoint - handles POST requests
   app.post("/mcp", async (req: Request, res: Response) => {
     try {
-      // Get or create session ID
+      // Get session ID from header
       const sessionId = req.headers["mcp-session-id"] as string | undefined;
 
       let transport: StreamableHTTPServerTransport;
+      let isNewSession = false;
+      let newSessionId: string | undefined;
 
       if (TRANSPORT_CONFIG.httpStateful && sessionId && transports.has(sessionId)) {
         // Reuse existing transport for stateful mode
         transport = transports.get(sessionId)!;
       } else {
-        // Create new transport
-        transport = new StreamableHTTPServerTransport(transportOptions);
-        
-        // In stateful mode, store the transport
+        // Generate session ID upfront for stateful mode
         if (TRANSPORT_CONFIG.httpStateful) {
-          const newSessionId = randomUUID();
+          newSessionId = randomUUID();
+          isNewSession = true;
+        }
+        
+        // Create new transport with pre-generated session ID
+        const options: ConstructorParameters<typeof StreamableHTTPServerTransport>[0] = {
+          sessionIdGenerator: TRANSPORT_CONFIG.httpStateful 
+            ? () => newSessionId!
+            : undefined,
+          enableJsonResponse: TRANSPORT_CONFIG.httpJsonResponse,
+        };
+        transport = new StreamableHTTPServerTransport(options);
+        
+        // Connect server to this transport
+        await server.connect(transport);
+        
+        // In stateful mode, store the transport immediately with our known session ID
+        if (TRANSPORT_CONFIG.httpStateful && newSessionId) {
           transports.set(newSessionId, transport);
           
           // Clean up on close
           transport.onclose = () => {
-            transports.delete(newSessionId);
+            if (newSessionId) {
+              transports.delete(newSessionId);
+            }
           };
-
-          // Connect server to this transport
-          await server.connect(transport);
-        } else {
-          // Stateless mode - connect for each request
-          await server.connect(transport);
         }
       }
 

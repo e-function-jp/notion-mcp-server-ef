@@ -4,7 +4,10 @@
 /coverage
 /logs
 /tmp
+/scripts
 .env
+.vscode
+.git
 .cursor
 .cursorignore
 .cursorrules

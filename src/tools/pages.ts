@@ -6,6 +6,7 @@ import { archivePage } from "./updatePage.js";
 import { restorePage } from "./updatePage.js";
 import { searchPages } from "./searchPage.js";
 import { updatePageProperties } from "./updatePageProperties.js";
+import { rewritePage } from "./rewritePage.js";
 
 export const registerPagesOperationTool = async (
   params: PagesOperationParams
@@ -21,10 +22,12 @@ export const registerPagesOperationTool = async (
       return searchPages(params.payload.params);
     case "update_page_properties":
       return updatePageProperties(params.payload.params);
+    case "rewrite_page":
+      return rewritePage(params.payload.params);
     default:
       return handleNotionError(
         new Error(
-          `Unsupported action, use one of the following: "create_page", "archive_page", "restore_page", "search_pages", "update_page_properties"`
+          `Unsupported action, use one of the following: "create_page", "archive_page", "restore_page", "search_pages", "update_page_properties", "rewrite_page"`
         )
       );
   }

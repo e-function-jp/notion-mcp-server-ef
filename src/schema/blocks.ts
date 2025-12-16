@@ -5,6 +5,7 @@ import { RICH_TEXT_ITEM_REQUEST_SCHEMA } from "./rich-text.js";
 import { preprocessJson } from "./preprocess.js";
 import { LANGUAGE_SCHEMA } from "./lang.js";
 import { FILE_SCHEMA } from "./file.js";
+import { getMarkdownMaxChars } from "../config/index.js";
 
 export const BASE_BLOCK_REQUEST_SCHEMA = z.object({
   type: z.string().describe("Type of block"),
@@ -160,8 +161,30 @@ export const APPEND_BLOCK_CHILDREN_SCHEMA = {
   blockId: z.string().describe("The ID of the block to append children to"),
   children: z
     .array(TEXT_BLOCK_REQUEST_SCHEMA)
-    .describe("Array of blocks to append as children"),
+    .optional()
+    .describe("Array of blocks to append as children. Cannot be used together with 'markdown'."),
+  markdown: z
+    .string()
+    .max(getMarkdownMaxChars())
+    .optional()
+    .describe(
+      `Optional Markdown text to convert to blocks and append. Supports headings (#, ##, ###), paragraphs, bold (**text**), italic (*text*), code blocks (\`\`\`), blockquotes (>), lists (-, *, 1.), task lists (- [ ], - [x]), horizontal rules (---), and images (![alt](url)). Cannot be used together with 'children'. Maximum ${getMarkdownMaxChars()} characters.`
+    ),
 };
+
+/**
+ * Zod schema for APPEND_BLOCK_CHILDREN with mutual exclusivity validation.
+ * Ensures exactly one of 'children' or 'markdown' is provided.
+ */
+export const APPEND_BLOCK_CHILDREN_VALIDATED_SCHEMA = z.object(APPEND_BLOCK_CHILDREN_SCHEMA)
+  .refine(
+    (data) => data.children || data.markdown,
+    { message: "Either 'children' or 'markdown' must be provided." }
+  )
+  .refine(
+    (data) => !(data.children && data.markdown),
+    { message: "Cannot specify both 'children' and 'markdown'. Use one or the other." }
+  );
 
 export const RETRIEVE_BLOCK_SCHEMA = {
   blockId: z.string().describe("The ID of the block to retrieve"),
@@ -176,6 +199,10 @@ export const RETRIEVE_BLOCK_CHILDREN_SCHEMA = {
     .max(100)
     .optional()
     .describe("Number of results to return (1-100)"),
+  markdown: z
+    .boolean()
+    .optional()
+    .describe("If true, return content as Markdown instead of block JSON. Default: uses NOTION_MCP_MARKDOWN_DEFAULT_FOR_READ or false."),
 };
 
 export const UPDATE_BLOCK_SCHEMA = {

@@ -135,6 +135,7 @@ env NOTION_TOKEN=YOUR_KEY NOTION_PAGE_ID=YOUR_PAGE_ID npx -y notion-mcp-server
 - **🔎 Search Functionality** - Search Notion pages and databases by title
 - **💬 Comments Management** - Get, create, and reply to comments on pages and discussions
 - **👥 User Management** - Retrieve workspace users and user information
+- **📄 Markdown Support** - Write Markdown content that converts to Notion blocks, and read Notion content as Markdown
 
 ## 📚 Documentation
 
@@ -241,6 +242,108 @@ Example operations:
   }
 }
 ```
+
+### Markdown Support
+
+The server supports Markdown content for seamless integration with AI assistants. Instead of constructing complex Notion block structures, you can simply provide Markdown text.
+
+#### Writing Markdown to Notion
+
+**Create a page with Markdown:**
+```javascript
+{
+  "payload": {
+    "action": "create_page",
+    "params": {
+      "parentPageId": "page-id",
+      "title": "My Page",
+      "markdown": "# Welcome\n\nThis is **bold** and *italic* text.\n\n- Item 1\n- Item 2\n\n```javascript\nconsole.log('Hello');\n```"
+    }
+  }
+}
+```
+
+**Append Markdown to existing blocks:**
+```javascript
+{
+  "payload": {
+    "action": "append_block_children",
+    "params": {
+      "blockId": "page-or-block-id",
+      "markdown": "## New Section\n\nAdding more content with a [link](https://example.com)."
+    }
+  }
+}
+```
+
+**Rewrite entire page content:**
+```javascript
+{
+  "payload": {
+    "action": "rewrite_page",
+    "params": {
+      "pageId": "page-id",
+      "markdown": "# Completely New Content\n\nThis replaces everything on the page."
+    }
+  }
+}
+```
+
+#### Reading Notion as Markdown
+
+**Retrieve block children as Markdown:**
+```javascript
+{
+  "payload": {
+    "action": "retrieve_block_children",
+    "params": {
+      "blockId": "page-or-block-id",
+      "markdown": true
+    }
+  }
+}
+```
+
+#### Supported Markdown Syntax
+
+| Markdown | Notion Block Type |
+|----------|------------------|
+| `# Heading` | Heading 1 |
+| `## Heading` | Heading 2 |
+| `### Heading` | Heading 3 |
+| Regular text | Paragraph |
+| `**bold**` | Bold text |
+| `*italic*` | Italic text |
+| `` `code` `` | Inline code |
+| `[text](url)` | Link |
+| `~~strikethrough~~` | Strikethrough |
+| `- item` or `* item` | Bulleted list item |
+| `1. item` | Numbered list item |
+| `- [ ] task` | To-do (unchecked) |
+| `- [x] task` | To-do (checked) |
+| `` ```lang `` | Code block |
+| `> quote` | Quote |
+| `---` | Divider |
+| `![alt](url)` | Image |
+| Nested lists | Nested list items (up to 3 levels) |
+
+#### Environment Configuration
+
+The following environment variables control Markdown behavior:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `NOTION_MCP_MARKDOWN_DEFAULT_FOR_READ` | `false` | Return Markdown for read operations by default |
+| `NOTION_MCP_MARKDOWN_MAX_CHARS` | `12000` | Maximum characters for Markdown output |
+
+#### Batch Processing
+
+Batch processing for Markdown writes is available in the following operations:
+
+- **`rewrite_page`**: Automatically batches when content converts to more than 100 blocks
+- **`append_block_children`** with `markdown` parameter: Automatically batches large appends
+
+**Note**: `create_page` with `markdown` does not support batching; if your Markdown converts to more than 100 blocks, use `create_page` with minimal content then use `append_block_children` with `markdown` for the rest.
 
 ### Available Resources
 

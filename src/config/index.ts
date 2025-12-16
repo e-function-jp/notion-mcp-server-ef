@@ -15,6 +15,14 @@ export const TRANSPORT_CONFIG = {
   httpJsonResponse: process.env.MCP_HTTP_JSON_RESPONSE !== "false", // default true
 };
 
+// Markdown configuration from environment variables
+export const MARKDOWN_CONFIG = {
+  /** Default to Markdown output for read operations (default: false = JSON) */
+  defaultForRead: process.env.NOTION_MCP_MARKDOWN_DEFAULT_FOR_READ === "true",
+  /** Maximum characters for Markdown output (default: 12000) */
+  maxChars: parseInt(process.env.NOTION_MCP_MARKDOWN_MAX_CHARS || "12000", 10),
+};
+
 /**
  * Get the current transport mode from environment
  */
@@ -25,4 +33,18 @@ export function getTransportMode(): TransportMode {
     return "stdio";
   }
   return mode;
+}
+
+/**
+ * Check if Markdown should be the default output format for read operations
+ */
+export function getMarkdownDefaultForRead(): boolean {
+  return MARKDOWN_CONFIG.defaultForRead;
+}
+
+/**
+ * Get maximum characters for Markdown output
+ */
+export function getMarkdownMaxChars(): number {
+  return MARKDOWN_CONFIG.maxChars;
 }
