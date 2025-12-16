@@ -122,6 +122,67 @@ env NOTION_TOKEN=YOUR_KEY NOTION_PAGE_ID=YOUR_PAGE_ID npx -y notion-mcp-server
 2. Replace `YOUR_KEY` and `YOUR_PAGE_ID` with your actual Notion API key and page ID
 3. Restart Claude Desktop to apply the changes
 
+### HTTP Server Integration (VS Code, Remote Clients)
+
+For remote MCP clients that connect via HTTP, you can run the server in HTTP mode and connect to it.
+
+#### Starting the HTTP Server
+
+```bash
+MCP_TRANSPORT_MODE=http \
+MCP_HTTP_PORT=8000 \
+NOTION_TOKEN=YOUR_KEY \
+NOTION_PAGE_ID=YOUR_PAGE_ID \
+node build/index.js
+```
+
+For SSE (Server-Sent Events) support, enable stateful mode:
+
+```bash
+MCP_TRANSPORT_MODE=http \
+MCP_HTTP_PORT=8000 \
+MCP_HTTP_STATEFUL=true \
+NOTION_TOKEN=YOUR_KEY \
+NOTION_PAGE_ID=YOUR_PAGE_ID \
+node build/index.js
+```
+
+#### VS Code MCP Configuration
+
+Create or edit `.vscode/mcp.json` in your project:
+
+```json
+{
+  "servers": {
+    "notion-mcp-server": {
+      "type": "http",
+      "url": "http://localhost:8000/mcp"
+    }
+  }
+}
+```
+
+For remote servers, replace the URL with your server endpoint:
+
+```json
+{
+  "servers": {
+    "notion-mcp-server": {
+      "type": "http",
+      "url": "https://your-server.example.com/mcp"
+    }
+  }
+}
+```
+
+#### HTTP Server Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `MCP_TRANSPORT_MODE` | `stdio` | Transport mode: `stdio` or `http` |
+| `MCP_HTTP_PORT` | `8000` | HTTP server port |
+| `MCP_HTTP_STATEFUL` | `false` | Enable stateful mode for SSE connections |
+
 ## 🌟 Features
 
 - **📝 Notion Integration** - Interact with Notion databases, pages, and blocks
